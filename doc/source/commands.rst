@@ -1,4 +1,142 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+from kivy.core.window import Window
 
+# تنظیم اندازه پنجره (مثل گوشی)
+Window.size = (360, 640)
+
+class MainScreen(BoxLayout):
+    def __init__(self, **kwargs):
+        super(MainScreen, self).__init__(**kwargs)
+        self.orientation = 'vertical'
+        self.padding = 10
+        self.spacing = 10
+        
+        # بخش عنوان و منو
+        self.create_header()
+        
+        # بخش اصلی
+        self.create_main_content()
+        
+        # بخش پایین
+        self.create_bottom_buttons()
+    
+    def create_header(self):
+        # Header layout
+        header = BoxLayout(size_hint_y=0.1)
+        
+        # عنوان
+        title = Label(
+            text='MinFinder | والت یاب',
+            color=(0, 1, 1, 1),  # آبی روشن
+            font_size=20,
+            bold=True
+        )
+        header.add_widget(title)
+        
+        self.add_widget(header)
+    
+    def create_main_content(self):
+        # بخش اصلی
+        main_content = BoxLayout(orientation='vertical', spacing=20, size_hint_y=0.6)
+        
+        # نمایش وضعیت
+        status_layout = BoxLayout(size_hint_y=0.2)
+        level_label = Label(text='LEVEL:-', color=(1, 1, 1, 1))
+        day_label = Label(text='DAY:-', color=(1, 1, 1, 1))
+        speed_label = Label(text='SPEED:-', color=(1, 1, 1, 1))
+        
+        status_layout.add_widget(level_label)
+        status_layout.add_widget(day_label)
+        status_layout.add_widget(speed_label)
+        main_content.add_widget(status_layout)
+        
+        # فیلد کاربر
+        user_label = Label(
+            text='USER: --',
+            color=(1, 1, 1, 1),
+            size_hint_y=0.3,
+            canvas_before=self.draw_user_box
+        )
+        main_content.add_widget(user_label)
+        
+        # دکمه Wallet Generator
+        wallet_btn = Button(
+            text='Wallet Generator',
+            size_hint_y=0.3,
+            background_color=(0.1, 0.1, 0.1, 1),
+            color=(1, 1, 1, 1)
+        )
+        wallet_btn.bind(on_press=self.wallet_generator)
+        main_content.add_widget(wallet_btn)
+        
+        self.add_widget(main_content)
+    
+    def draw_user_box(self, canvas):
+        # رسم کادر دور فیلد کاربر
+        pass
+    
+    def create_bottom_buttons(self):
+        # بخش پایین با دکمه‌ها
+        bottom = BoxLayout(orientation='vertical', spacing=20, size_hint_y=0.3)
+        
+        # دکمه TEST
+        test_btn = Button(
+            text='TEST',
+            background_color=(0.1, 0.1, 0.1, 1),
+            color=(0, 1, 0, 1),  # سبز
+            font_size=24,
+            bold=True
+        )
+        test_btn.bind(on_press=self.test_pressed)
+        bottom.add_widget(test_btn)
+        
+        # دکمه LOGIN
+        login_btn = Button(
+            text='LOGIN',
+            background_color=(0.1, 0.1, 0.1, 1),
+            color=(0, 1, 1, 1),  # آبی روشن
+            font_size=24,
+            bold=True
+        )
+        login_btn.bind(on_press=self.login_pressed)
+        bottom.add_widget(login_btn)
+        
+        self.add_widget(bottom)
+    
+    def test_pressed(self, instance):
+        popup = Popup(
+            title='Test',
+            content=Label(text='آزمون انجام شد!'),
+            size_hint=(0.8, 0.4)
+        )
+        popup.open()
+    
+    def login_pressed(self, instance):
+        popup = Popup(
+            title='Login',
+            content=Label(text='ورود به حساب کاربری!'),
+            size_hint=(0.8, 0.4)
+        )
+        popup.open()
+    
+    def wallet_generator(self, instance):
+        popup = Popup(
+            title='Wallet Generator',
+            content=Label(text='ساخت کیف پول جدید!'),
+            size_hint=(0.8, 0.4)
+        )
+        popup.open()
+
+class WalletApp(App):
+    def build(self):
+        return MainScreen()
+
+if __name__ == '__main__':
+    WalletApp().run()
 Commands
 ========
 
